@@ -1,12 +1,8 @@
-import {
-  Button as ButtonNativeBase,
-  Heading,
-  IIconButtonProps,
-} from "native-base";
+import { Button as ButtonNativeBase, Heading, IButtonProps } from "native-base";
 
 type ButtonProps = {
   title: string;
-} & IIconButtonProps;
+} & IButtonProps;
 
 export const Button = ({ title, ...rest }: ButtonProps) => {
   return (

@@ -8,9 +8,7 @@ import {
   FlatList,
   Center,
 } from "native-base";
-
-import { ListRenderItemInfo } from "react-native";
-
+import { ListRenderItemInfo, Alert } from "react-native";
 import Logo from "../assets/logo_secondary.svg";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Filter } from "../components/Filter";
@@ -18,6 +16,9 @@ import { useState } from "react";
 import { Order, OrderProps } from "../components/Order";
 import { Button } from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
+
+import { getAuth, signOut } from "firebase/auth";
+import { app } from "../../firebaseConfig";
 
 export const Home = () => {
   const { colors } = useTheme();
@@ -33,6 +34,7 @@ export const Home = () => {
     },
   ]);
   const { navigate } = useNavigation();
+  const auth = getAuth(app);
 
   const handleNewOrder = () => {
     navigate("register");
@@ -40,6 +42,15 @@ export const Home = () => {
 
   const handleOpenDetails = (id: string) => {
     navigate("details", { orderId: id });
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Sair", "Não foi possivel sair.");
+    }
   };
 
   const rederItem = ({ item }: ListRenderItemInfo<OrderProps>) => {
@@ -64,6 +75,7 @@ export const Home = () => {
             <FontAwesome name="sign-out" size={26} color={colors.gray[300]} />
           }
           _pressed={{ bg: "gray.400" }}
+          onPress={handleLogout}
         />
       </HStack>
 

@@ -13,6 +13,7 @@ import { FontAwesome } from "@expo/vector-icons";
 export type OrderProps = {
   id: string;
   patrimony: string;
+  description: string;
   when: string;
   status: "open" | "closed";
 };
@@ -41,7 +42,7 @@ export const Order = ({ data, ...rest }: Props) => {
 
         <VStack flex={1} my={5} ml={5}>
           <Text color="white" fontSize="md">
-            {data.patrimony}
+            {data.description}
           </Text>
           <HStack alignItems="center">
             <FontAwesome name="clock-o" color={colors.gray[200]} size={15} />

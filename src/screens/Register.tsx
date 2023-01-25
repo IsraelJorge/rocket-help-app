@@ -6,11 +6,14 @@ import { Header } from "../components/Header";
 import { Input } from "../components/Input";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
+import { useNavigation } from "@react-navigation/native";
 
 export const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [patrimony, setPatrimony] = useState("");
   const [description, setDescription] = useState("");
+
+  const { goBack } = useNavigation();
 
   const handleNewOrderRegiste = async () => {
     if (!patrimony || !description) {
@@ -20,21 +23,25 @@ export const Register = () => {
     setIsLoading(true);
 
     try {
-      const docRef = await addDoc(collection(db, "orders"), {
+      await addDoc(collection(db, "orders"), {
         patrimony,
         description,
         status: "open",
         created_at: serverTimestamp(),
       });
 
-      setPatrimony("");
-      setDescription("");
+      Alert.alert("Solicitação", "Solicitação registrada com sucesso.");
 
-      Alert.alert("Solicitação", "Solicitação registradacom sucesso.");
+      goBack();
     } catch (e) {
       console.error("Error adding document: ", e);
-    } finally {
+
       setIsLoading(false);
+
+      return Alert.alert(
+        "Solicitação",
+        "Não foi possivel fazer a solicitação."
+      );
     }
   };
 
